@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, FlatList } from 'react-native';
 import Colors from '../../../colors';
 import { AntDesign } from '@expo/vector-icons';
+import { Button } from 'react-native-paper';
 
 const INITIAL = {
     parent1: require("../../../../assets/component/profile/gantiakun/parent1.png"),
@@ -10,11 +11,10 @@ const INITIAL = {
     child2: require("../../../../assets/component/profile/gantiakun/child2.png"),
 }
 
-const GantiAkunComponent = ({ onPressHandler }) => {
+const GantiAkunComponent = ({ onPressHandler, passUser }) => {
     const [parent, setParent] = useState(INITIAL.parent1);
     const [child, setChild] = useState(INITIAL.child2);
     const [button, setButton] = useState(false);
-
 
     return (
         <>
@@ -55,7 +55,7 @@ const GantiAkunComponent = ({ onPressHandler }) => {
                     </TouchableOpacity>
                 </View>
                 {button ?
-                    <View
+                    <><View
                         style={{
                             // borderColor: '#ccc',
                             // borderWidth: 5,
@@ -63,10 +63,52 @@ const GantiAkunComponent = ({ onPressHandler }) => {
                             alignItems: 'center',
                             paddingTop: 15,
                         }}>
-                        <TouchableOpacity onPress={() => onPressHandler()}>
-                            <AntDesign name="pluscircle" size={Dimensions.get('window').height / 20} color={Colors.secondColor} />
-                        </TouchableOpacity>
+
                     </View>
+                        <View>
+                            <FlatList
+                                horizontal
+                                key={passUser.children.id}
+                                data={passUser.children}
+                                renderItem={({ item }) =>
+                                    <View>
+                                        <TouchableOpacity onPress={() => { }}>
+                                            <View style={{
+                                                margin: 10,
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                maxWidth: '100%'
+                                            }}>
+                                                <Button
+                                                    mode='contained'
+                                                    color={Colors.secondColor}
+                                                    icon="human-greeting"
+                                                    theme={{
+                                                        colors: {
+                                                            text: '#ccc'
+                                                        },
+
+                                                    }
+                                                    }
+
+                                                ><Text style={{
+                                                    color: 'white',
+                                                    fontFamily: 'TallyText-Bold'
+                                                }}>{item.name}</Text></Button>
+                                            </View>
+                                            <View style={styles.border}>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                }
+                            ></FlatList>
+                            <View style={{ alignItems: 'flex-end' }}>
+                                <TouchableOpacity onPress={() => onPressHandler()}>
+                                    <AntDesign name="pluscircle" size={Dimensions.get('window').height / 20} color={Colors.secondColor} />
+                                </TouchableOpacity>
+                            </View>
+                        </View></>
                     : null}
             </View>
         </>

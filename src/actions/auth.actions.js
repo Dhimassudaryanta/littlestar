@@ -57,7 +57,7 @@ export const SignUp = (name, email, country, countryCode, mobile, password, chec
     }
 }
 
-export const SignInEmail = (email, country, countryCode, password, callback) => async dispatch => {
+export const SignInEmail = (email, password, callback) => async dispatch => {
 
     // console.log(email, country, countryCode, password)
 
@@ -65,13 +65,60 @@ export const SignInEmail = (email, country, countryCode, password, callback) => 
     try {
         const response = await Api.post('/api/v1/login/email/post', {
             "email": `${email}`,
-            "password": `${password}`,
+            "password": `${password}`
         });
         // console.log(response.data.data);
 
         if (response.data.status === 'success') {
             const getId = response.data.data.user.id
             const getToken = response.data.data.token
+
+            ToastAndroid.show('Login Berhasil', ToastAndroid.LONG);
+
+            // console.log(getId, getToken);
+            response2 = await Api.get(`/api/v1/users/${getId}`, {
+                headers: {
+                    Authorization: `Bearer ${getToken}`
+                },
+
+            })
+
+            await AsyncStorage.setItem('token', getToken);
+            await AsyncStorage.setItem('user', JSON.stringify(response2.data.data));
+
+            dispatch({ type: "SIGN_IN", payload: response2.data.data.user })
+
+            if (callback) {
+                callback();
+            }
+        }
+
+    } catch (err) {
+        console.log(err.response.data.message)
+        showToast(err.response.data.message);
+    }
+
+
+
+}
+
+export const SignInMobile = (mobile, password, callback) => async dispatch => {
+
+    // console.log(email, country, countryCode, password)
+    console.log(mobile, password)
+
+    try {
+        const response = await Api.post('/api/v1/login/phone/post', {
+            "mobile": `${mobile}`,
+            "password": `${password}`
+        });
+        // console.log(response.data.data);
+
+        if (response.data.status === 'success') {
+            const getId = response.data.data.user.id
+            const getToken = response.data.data.token
+
+            ToastAndroid.show('Login Berhasil', ToastAndroid.LONG);
 
             // console.log(getId, getToken);
             response2 = await Api.get(`/api/v1/users/${getId}`, {
@@ -110,6 +157,7 @@ export const tryLocalSignIn = () => async dispatch => {
         const user2 = JSON.parse(user);
         const user3 = user2.user;
 
+
         dispatch({ type: 'SIGN_IN', payload: user3 });
     }
     else {
@@ -117,8 +165,6 @@ export const tryLocalSignIn = () => async dispatch => {
     }
 
 }
-
-
 
 export const SignOut = (callback) => async dispatch => {
 
@@ -133,6 +179,12 @@ export const SignOut = (callback) => async dispatch => {
 
 
 }
+
+
+
+
+
+
 
  // console.log(name, email, country, countryCode, mobile, password, statusUser);
 

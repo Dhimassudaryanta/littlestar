@@ -26,7 +26,7 @@ const ProfileComponent = ({ passUser }) => {
         }
     }, [passUser])
 
-    console.log(user);
+    // console.log(user);
 
     return (
         <View style={{

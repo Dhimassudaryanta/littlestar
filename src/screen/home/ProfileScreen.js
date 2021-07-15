@@ -17,12 +17,12 @@ const ProfileScreen = ({ navigation, getUser }) => {
     useEffect(() => {
 
         setUser(getUser);
-        console.log("wkwkwk")
+        // console.log("wkwkwk")
 
 
     }, [getUser]);
 
-    console.log(getUser);
+    // console.log(getUser);
     //fonts
     let [fontsLoaded] = useFonts({
         'Poppins-Light': require('../../../assets/font/Poppins-Light.ttf'),

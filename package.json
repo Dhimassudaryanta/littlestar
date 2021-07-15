@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.0",
+    "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-picker/picker": "^1.16.3",
@@ -18,7 +19,9 @@
     "axios": "^0.21.1",
     "expo": "~42.0.0",
     "expo-app-loading": "^1.1.2",
+    "expo-facebook": "^11.3.1",
     "expo-font": "~9.2.1",
+    "expo-google-app-auth": "^8.2.2",
     "expo-linear-gradient": "^9.2.0",
     "expo-status-bar": "~1.0.4",
     "formik": "^2.2.9",
@@ -44,8 +47,7 @@
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "yp": "^2.0.3",
-    "yup": "^0.32.9",
-    "@react-native-async-storage/async-storage": "~1.15.0"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

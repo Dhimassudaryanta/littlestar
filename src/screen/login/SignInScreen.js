@@ -9,19 +9,19 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from '@expo-google-fonts/inter';
 
 import { connect } from 'react-redux';
-import { SignInEmail } from '../../actions/auth.actions';
+import { SignInEmail, SignInMobile } from '../../actions/auth.actions';
 
-const SignIn = ({ navigation, SignInEmail }) => {
+const SignIn = ({ navigation, SignInEmail, SignInMobile }) => {
 
     const onSubmitHandler = (email, mobile, country, countryCode, password) => {
 
         // console.log(email, mobile, country, countryCode, password);
         // console.log(password)
         if (email) {
-            SignInEmail(email, country, countryCode, password, () => navigation.navigate('Home'));
+            SignInEmail(email, password, () => navigation.navigate('Home'));
         }
         else if (mobile) {
-            console.log("mobile");
+            SignInMobile(mobile, password, () => navigation.navigate('Home'));
         }
     }
 
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
     }
 
 });
-export default connect(null, { SignInEmail })(SignIn);
+export default connect(null, { SignInEmail, SignInMobile })(SignIn);

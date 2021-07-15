@@ -1,17 +1,43 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions, RefreshControl } from 'react-native';
 import FooterSwitch from '../../components/profile/footer/FooterSwitch.component';
 import GantiAkunComponent from '../../components/profile/list/GantiAkun.component';
-import FormLogin from '../../components/form/FormLogin.component';
+import FormChild from '../../components/form/FormChild.component';
+import { connect } from 'react-redux';
+import { ChildAdd } from '../../actions/child.actions';
 
-const GantiAkunScreen = () => {
+const wait = timeout => {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+};
+
+const GantiAkunScreen = ({ ChildAdd, getUser }) => {
 
     const [condition, setCondition] = useState(1);
+    const [user, setUser] = useState('');
+    const [refreshing, setRefreshing] = useState(false);
+
+    useEffect(() => {
+        setUser(getUser);
+    }, [getUser])
+
+    const onRefresh = () => {
+        setRefreshing(true);
+
+        wait(1000).then(() => setRefreshing(false));
+    };
 
     onPressHandler = () => {
         console.log('wkwkwk');
         setCondition(2);
     }
+
+    const onSubmitHandler = (name, date) => {
+        ChildAdd(name, date)
+        setCondition(1);
+    }
+
 
     if (condition === 1) {
         return (
@@ -21,6 +47,7 @@ const GantiAkunScreen = () => {
                 <View style={styles.body}>
                     <GantiAkunComponent
                         onPressHandler={onPressHandler}
+                        passUser={user ? user : null}
                     ></GantiAkunComponent>
 
                 </View>
@@ -41,7 +68,7 @@ const GantiAkunScreen = () => {
         return (
             <View style={styles.container}>
                 <View style={styles.body}>
-                    <FormLogin initialValues='AddChild'></FormLogin>
+                    <FormChild onSubmit={onSubmitHandler} ></FormChild>
                 </View>
                 <View style={styles.footer}>
                     <FooterSwitch></FooterSwitch>
@@ -79,4 +106,8 @@ const styles = StyleSheet.create({
 
 });
 
-export default GantiAkunScreen;
+const mapStateToProps = (state) => {
+    return { getUser: state.auth }
+}
+
+export default connect(mapStateToProps, { ChildAdd })(GantiAkunScreen);

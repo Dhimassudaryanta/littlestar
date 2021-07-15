@@ -11,6 +11,8 @@ export default (state = '', action) => {
             return action.payload;
         case "SIGN_OUT":
             return action.payload;
+        case "CHILD_ADD":
+            return action.payload;
         default:
             return state;
     }
